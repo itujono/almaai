@@ -1,3 +1,13 @@
+.dialogContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.dialogContent > :global(div[class*="select_field"]) {
+  margin-top: -1rem;
+}
+
 .leadsPageLayout {
   display: flex;
   flex-direction: column;
@@ -127,4 +137,28 @@
 
 .paginationNavButton svg {
   stroke: currentColor; 
+}
+
+.error {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  background-color: rgb(254 242 242);
+  color: rgb(153 27 27);
+  font-size: 0.875rem;
+}
+
+.loading {
+  position: relative;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(1px);
+  border-radius: 0.875rem;
 } 

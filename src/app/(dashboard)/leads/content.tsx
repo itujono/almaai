@@ -3,12 +3,13 @@
 import Table from "@/components/table/table";
 import { useState, useEffect } from "react";
 import { Lead } from "@/actions/leads";
-import AlertDialog from "@/components/alert-dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogCancel } from "@/components/alert-dialog";
 import { SearchIcon } from "lucide-react";
 import Input from "@/components/input/base";
 import Select from "@/components/select/base";
 import styles from "./leads.module.css";
 import { useQueryState } from "nuqs";
+import Button from "@/components/button";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -35,46 +36,67 @@ export default function LeadsContent({ leads: initialLeads }: LeadsFormData) {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [leads, setLeads] = useState(initialLeads);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      updateFilters(searchValue, statusValue);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const [openStatusDialog, setOpenStatusDialog] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     updateFilters(searchValue, statusValue);
-  }, [statusValue]);
+  }, [searchValue, statusValue]);
 
   const updateFilters = async (search: string, status: string) => {
     try {
       setIsLoading(true);
+      setError(null);
       const response = await fetch(`/api/leads?search=${search}&status=${status}`);
       if (!response.ok) throw new Error("Failed to fetch leads");
       const data = await response.json();
       setLeads(data);
     } catch (error) {
       console.error("Error fetching leads:", error);
+      setError("Failed to fetch leads. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleUpdateStatus = (lead: Lead) => {
-    console.log(`Confirmed update for lead: ${lead.name}`);
+  const handleUpdateStatus = async (lead: Lead, newStatus: string) => {
+    try {
+      setError(null);
+      const url = `/api/leads/${lead.id}`;
+
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        throw new Error(`Failed to update lead status: ${response.status} ${responseText}`);
+      }
+
+      setLeads((currentLeads) => currentLeads.map((l) => (l.id === lead.id ? { ...l, status: newStatus } : l)));
+      updateFilters(searchValue, statusValue);
+    } catch (error) {
+      console.error("Error updating lead status:", error);
+      setError("Failed to update lead status. Please try again.");
+    }
   };
 
-  const renderActions = (lead: Lead) => (
-    <AlertDialog
-      triggerText="Update..."
-      title={`Update status for ${lead.name}`}
-      description={`Are you sure you want to update the status for ${lead.name}? This action cannot be undone.`}
-      okText="Confirm Update"
-      onOk={() => handleUpdateStatus(lead)}
-    />
-  );
+  const handleOpenDialog = (lead: Lead) => {
+    setSelectedLead(lead);
+    setSelectedStatus(lead.status);
+    setOpenStatusDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenStatusDialog(false);
+    setSelectedLead(null);
+    setSelectedStatus("");
+  };
 
   return (
     <>
@@ -99,14 +121,49 @@ export default function LeadsContent({ leads: initialLeads }: LeadsFormData) {
           onValueChange={(value: unknown) => setStatusValue(value as string)}
         />
       </div>
-      <Table
-        headers={leadHeaders}
-        data={leads}
-        itemsPerPage={ITEMS_PER_PAGE}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-        actions={renderActions}
-      />
+      {error && <div className={styles.error}>{error}</div>}
+      <div className={isLoading ? styles.loading : ""}>
+        <Table
+          headers={leadHeaders}
+          data={leads}
+          itemsPerPage={ITEMS_PER_PAGE}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+          actions={(lead) => (
+            <Button size="small" onClick={() => handleOpenDialog(lead)}>
+              Update...
+            </Button>
+          )}
+        />
+      </div>
+      <AlertDialog
+        title={`Update status for ${selectedLead?.name ?? ""}`}
+        description="Select a new status for this lead."
+        open={openStatusDialog}
+        onOpenChange={handleCloseDialog}
+      >
+        <div className={styles.dialogContent}>
+          <Select
+            placeholder="Select status"
+            options={statusOptions}
+            value={selectedStatus}
+            onValueChange={(value) => setSelectedStatus(value as string)}
+          />
+          <AlertDialogContent>
+            <AlertDialogCancel onClick={handleCloseDialog}>Cancel</AlertDialogCancel>
+            <Button
+              onClick={() => {
+                if (selectedLead && selectedStatus) {
+                  handleUpdateStatus(selectedLead, selectedStatus);
+                  handleCloseDialog();
+                }
+              }}
+            >
+              Update Status
+            </Button>
+          </AlertDialogContent>
+        </div>
+      </AlertDialog>
     </>
   );
 }

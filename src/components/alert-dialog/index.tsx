@@ -1,83 +1,57 @@
 import { AlertDialog as AlertDialogBase } from "@base-ui-components/react/alert-dialog";
 import styles from "./alert.module.css";
 import Button from "../button";
+import type { ComponentProps } from "react";
 
 interface AlertDialogProps extends React.ComponentProps<typeof AlertDialogBase.Root> {
   title: string;
   description: string;
+  children: React.ReactNode;
   triggerText?: string;
-  children?: React.ReactNode;
-  closeText?: string | React.ReactNode;
-  okText?: string | React.ReactNode;
-  onOk: () => void;
 }
 
-export default function AlertDialog({
-  title,
-  description,
-  children,
-  triggerText,
-  closeText = "Cancel",
-  onOk,
-  okText,
-  ...props
-}: AlertDialogProps) {
+interface AlertDialogContentProps {
+  children: React.ReactNode;
+}
+
+interface ButtonProps extends ComponentProps<"button"> {
+  variant?: "primary" | "secondary";
+  size?: "medium" | "small";
+}
+
+interface AlertDialogButtonProps extends Omit<ButtonProps, "className"> {
+  children: React.ReactNode;
+}
+
+export function AlertDialog({ title, description, children, triggerText, ...props }: AlertDialogProps) {
   return (
     <AlertDialogBase.Root {...props}>
-      <AlertDialogBase.Trigger
-        render={(props) => (
-          <Button {...props} size="small">
-            {triggerText}
-          </Button>
-        )}
-      />
       <AlertDialogBase.Portal>
         <AlertDialogBase.Backdrop className={styles.Backdrop} />
         <AlertDialogBase.Popup className={styles.Popup}>
           <AlertDialogBase.Title className={styles.Title}>{title}</AlertDialogBase.Title>
           <AlertDialogBase.Description className={styles.Description}>{description}</AlertDialogBase.Description>
-          <div className={styles.Actions}>
-            <AlertDialogBase.Close
-              render={(props) => (
-                <Button variant="secondary" {...props}>
-                  {closeText}
-                </Button>
-              )}
-            >
-              {closeText}
-            </AlertDialogBase.Close>
-            <AlertDialogBase.Close
-              render={(props) => (
-                <Button variant="primary" {...props} onClick={onOk}>
-                  {okText}
-                </Button>
-              )}
-            >
-              {okText}
-            </AlertDialogBase.Close>
-          </div>
+          {children}
         </AlertDialogBase.Popup>
       </AlertDialogBase.Portal>
     </AlertDialogBase.Root>
   );
 }
 
-interface AlertDialogContentProps extends React.ComponentProps<typeof AlertDialogBase.Portal> {
-  title: string;
-  description: string;
+export function AlertDialogContent({ children }: AlertDialogContentProps) {
+  return <div className={styles.Actions}>{children}</div>;
 }
 
-AlertDialog.Content = function AlertDialogContent({ children, title, description, ...props }: AlertDialogContentProps) {
+export function AlertDialogCancel({ children, ...props }: AlertDialogButtonProps) {
   return (
-    <AlertDialogBase.Portal {...props}>
-      <AlertDialogBase.Backdrop className={styles.Backdrop} />
-      <AlertDialogBase.Popup className={styles.Popup}>
-        <AlertDialogBase.Title className={styles.Title}>{title}</AlertDialogBase.Title>
-        <AlertDialogBase.Description className={styles.Description}>{description}</AlertDialogBase.Description>
-        {children}
-      </AlertDialogBase.Popup>
-    </AlertDialogBase.Portal>
+    <AlertDialogBase.Close
+      render={(buttonProps) => (
+        <Button variant="secondary" {...props} {...(buttonProps as ButtonProps)}>
+          {children}
+        </Button>
+      )}
+    >
+      {children}
+    </AlertDialogBase.Close>
   );
-};
-
-export { AlertDialog };
+}

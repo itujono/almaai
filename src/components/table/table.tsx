@@ -7,6 +7,7 @@ interface TableHeader {
   key: string;
   label: string;
   sortable?: boolean;
+  render?: (value: any) => React.ReactNode;
 }
 
 type SortConfig = {
@@ -102,7 +103,7 @@ const Table = <T extends Record<string, any>>({
               <tr key={index} className={styles.tr}>
                 {headers.map((header) => (
                   <td key={header.key} className={styles.td}>
-                    {item[header.key]}
+                    {header.render ? header.render(item[header.key]) : item[header.key]}
                   </td>
                 ))}
                 {actions && <td className={`${styles.actionsCell} ${styles.td}`}>{actions(item)}</td>}
