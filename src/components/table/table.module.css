@@ -1,0 +1,115 @@
+.tableContainer {
+  width: 100%;
+  overflow-x: auto; /* For responsive behavior on small screens */
+  border: 1px solid var(--table-border-color); /* Light gray border, similar to image */
+  border-radius: 8px; /* Rounded corners for the container */
+  background-color: var(--table-bg-color); /* White background for the table area */
+  box-shadow: 0 4px 6px -1px var(--table-shadow-color-light), 0 2px 4px -1px var(--table-shadow-color-dark); /* Subtle shadow */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse; /* Removes default spacing between cells */
+  min-width: 600px; /* Minimum width before horizontal scroll appears */
+}
+
+.caption {
+  padding: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: left;
+  color: var(--caption-text-color); /* Dark gray text */
+}
+
+.thead {
+  background-color: var(--thead-bg-color); /* Very light gray for header background */
+}
+
+.th,
+.td {
+  padding: 0.75rem 1rem; /* Consistent padding for header and data cells */
+  text-align: left;
+  border-bottom: 1px solid var(--table-border-color); /* Horizontal lines between rows */
+  color: var(--th-text-color); /* Default to th text color, td will override */
+  font-size: 0.875rem; /* Slightly smaller font size for table content */
+}
+
+.th {
+  font-weight: 600; /* Make header text a bit bolder */
+  text-transform: capitalize; /* Capitalize header labels if needed */
+  /* cursor: pointer; */ /* Will be handled by sortableHeader */
+}
+
+/* Remove border from the last row's cells for a cleaner look */
+.tbody .tr:last-child .td {
+  border-bottom: none;
+}
+
+/* Basic hover effect for rows */
+.tbody .tr:hover {
+  background-color: var(--tr-hover-bg-color); /* Light gray on hover */
+}
+
+/* Style for data-label attribute for responsive tables (optional, but good practice) */
+@media screen and (max-width: 600px) {
+  .table {
+    border: 0;
+  }
+
+  .table caption {
+    font-size: 1.3em;
+  }
+  
+  .table .thead {
+    display: none; /* Hide table headers on small screens */
+  }
+  
+  .table .tr {
+    border-bottom: 3px solid var(--responsive-border-color);
+    display: block;
+    margin-bottom: .625em;
+  }
+  
+  .table .td {
+    border-bottom: 1px solid var(--responsive-border-color);
+    display: block;
+    font-size: .8em;
+    text-align: right;
+  }
+  
+  .table .td::before {
+    /* Use the data-label attribute for pseudo-header */
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--responsive-td-label-color);
+  }
+  
+  .table .td:last-child {
+    border-bottom: 0;
+  }
+}
+
+.sortableHeader {
+  cursor: pointer;
+}
+
+.sortableHeader:hover {
+  background-color: var(--th-hover-bg-color); /* Slightly darker on hover for sortable headers */
+}
+
+.sortIndicator {
+  margin-left: 0.5rem;
+  font-size: 0.8em; /* Smaller indicator */
+  display: inline-block; /* Keep it on the same line */
+}
+
+.td {
+  color: var(--td-text-color); /* Darker text for data cells for better contrast */
+}
+
+.actionsCell {
+  /* Add specific styles for actions cell if needed, e.g., text-align: right */
+  /* For now, it will inherit styles from .td */
+} 
