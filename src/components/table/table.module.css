@@ -42,6 +42,10 @@
   border-bottom: none;
 }
 
+.tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
 .tbody .tr:hover {
   background-color: var(--tr-hover-bg-color);
 }
@@ -87,6 +91,7 @@
 
 .sortableHeader {
   cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .sortableHeader:hover {

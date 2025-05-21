@@ -68,9 +68,9 @@
   --caption-text-color: rgb(45 55 72);
   --thead-bg-color: rgb(247 250 252);
   --th-text-color: rgb(74 85 104);
-  --th-hover-bg-color: rgb(237 242 247);
+  --th-hover-bg-color: rgb(0 0 0 / 0.05);
   --td-text-color: rgb(45 55 72);
-  --tr-hover-bg-color: rgb(237 242 247);
+  --tr-hover-bg-color: rgb(0 0 0 / 0.05);
   --responsive-border-color: rgb(221 221 221);
   --responsive-td-label-color: rgb(45 55 72);
 }

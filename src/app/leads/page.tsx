@@ -1,11 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import Table, { TableRow } from "@/components/table/table";
 import Input from "@/components/input";
 import Select from "@/components/select";
 import AlertDialog from "@/components/alert-dialog";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "lucide-react";
 import styles from "./leads.module.css";
 
 const ITEMS_PER_PAGE = 5;
@@ -37,10 +38,14 @@ const statusOptions = [
   { value: "closed", label: "Closed" },
 ];
 
+interface LeadsFormData {
+  searchLeads: string;
+  statusFilter: string;
+}
+
 export default function Leads() {
   const [currentPage, setCurrentPage] = useState(1);
-  // const [searchTerm, setSearchTerm] = useState('');
-  // const [selectedStatus, setSelectedStatus] = useState('');
+  const { control } = useForm<LeadsFormData>();
 
   const totalPages = Math.ceil(mockLeadsData.length / ITEMS_PER_PAGE);
 
@@ -103,8 +108,20 @@ export default function Leads() {
       <div className={styles.leadsContentPanel}>
         <h1 className={styles.title}>Leads</h1>
         <div className={styles.controlsContainer}>
-          <Input name="searchLeads" placeholder="Search" aria-label="Search leads" />
-          <Select name="statusFilter" placeholder="Status" options={statusOptions} aria-label="Filter by status" />
+          <Input
+            control={control}
+            name="searchLeads"
+            placeholder="Search"
+            aria-label="Search leads"
+            leading={<SearchIcon size={18} />}
+          />
+          <Select
+            control={control}
+            name="statusFilter"
+            placeholder="Status"
+            options={statusOptions}
+            aria-label="Filter by status"
+          />
         </div>
         <Table
           headers={leadHeaders}
