@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Select as SelectBase } from "@base-ui-components/react/select";
-import { ChevronsUpDown, Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import styles from "./select.module.css";
 
 interface SelectOption {
@@ -20,7 +20,7 @@ export default function Select({ name, placeholder, options, ...props }: SelectP
       <SelectBase.Trigger className={styles.select}>
         <SelectBase.Value placeholder={placeholder} />
         <SelectBase.Icon className={styles.icon}>
-          <ChevronsUpDown size={16} />
+          <ChevronDown size={18} />
         </SelectBase.Icon>
       </SelectBase.Trigger>
       <SelectBase.Portal>

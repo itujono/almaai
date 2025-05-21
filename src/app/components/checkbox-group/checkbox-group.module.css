@@ -1,0 +1,7 @@
+.CheckboxGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.25rem;
+  color: var(--primary-color);
+}

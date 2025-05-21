@@ -1,7 +1,6 @@
 import { CheckboxGroup as CheckboxGroupBase } from "@base-ui-components/react/checkbox-group";
-import styles from "./checkbox-group.module.css";
 import Checkbox from "../checkbox";
-
+import styles from "./checkbox-group.module.css";
 interface Item {
   value: string;
   label: string;
@@ -14,7 +13,7 @@ type CheckboxGroupProps = React.ComponentProps<typeof CheckboxGroupBase> & {
 
 export default function CheckboxGroup({ label, items, ...props }: CheckboxGroupProps) {
   return (
-    <CheckboxGroupBase className={styles.checkboxGroup} {...props}>
+    <CheckboxGroupBase className={styles.CheckboxGroup} {...props}>
       {items.map((item) => (
         <Checkbox key={item.value} label={item.label} value={item.value} />
       ))}
