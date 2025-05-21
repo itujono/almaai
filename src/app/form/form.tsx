@@ -2,9 +2,9 @@
 
 import Button from "@/components/button";
 import Textarea from "@/components/textarea";
-import Input from "@/components/input";
-import Select from "@/components/select";
-import CheckboxGroup from "@/components/checkbox-group";
+import Input from "@/components/input/form";
+import Select from "@/components/select/form";
+import { FormCheckboxGroup } from "@/components/checkbox-group";
 import { useState } from "react";
 import styles from "./page.module.css";
 import formStyles from "./form.module.css";
@@ -81,7 +81,7 @@ case based on your goals."
       <section className={styles.formSection}>
         <SectionHeader icon="🎲" title="Visa categories of interest?" />
         <div className={styles.innerSection}>
-          <CheckboxGroup name="visaCategories" items={visaCategories} />
+          <FormCheckboxGroup name="visaCategories" items={visaCategories} control={form.control} />
         </div>
       </section>
 

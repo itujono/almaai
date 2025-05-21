@@ -1,9 +1,9 @@
 .tableContainer {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid var(--table-border-color);
-  border-radius: 14px;
-  background-color: var(--table-bg-color);
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 0.875rem;
+  background-color: rgb(var(--bg-color));
 }
 
 .table {
@@ -17,7 +17,7 @@
   font-size: 1.25rem;
   font-weight: bold;
   text-align: left;
-  color: var(--caption-text-color);
+  color: rgb(var(--text-color));
 }
 
 .thead {
@@ -28,14 +28,18 @@
 .td {
   padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--table-border-color);
-  color: var(--th-text-color);
+  border-bottom: 1px solid rgb(var(--border-color));
   font-size: 0.875rem;
 }
 
 .th {
   font-weight: 600;
   text-transform: capitalize;
+  color: rgb(var(--secondary-color));
+}
+
+.td {
+  color: rgb(var(--text-color));
 }
 
 .tbody .tr:last-child .td {
@@ -46,8 +50,8 @@
   transition: background-color 0.2s ease-in-out;
 }
 
-.tbody .tr:hover {
-  background-color: var(--tr-hover-bg-color);
+.tbody tr:hover {
+  background-color: rgba(var(--primary-color), 0.05);
 }
 
 @media screen and (max-width: 600px) {
@@ -55,36 +59,36 @@
     border: 0;
   }
 
-  .table caption {
+  .caption {
     font-size: 1.3em;
   }
   
-  .table .thead {
+  .thead {
     display: none;
   }
   
-  .table .tr {
-    border-bottom: 3px solid var(--responsive-border-color);
+  .tr {
+    border-bottom: 3px solid rgb(var(--border-color));
     display: block;
     margin-bottom: .625em;
   }
   
-  .table .td {
-    border-bottom: 1px solid var(--responsive-border-color);
+  .td {
+    border-bottom: 1px solid rgb(var(--border-color));
     display: block;
     font-size: .8em;
     text-align: right;
   }
   
-  .table .td::before {
+  .td::before {
     content: attr(data-label);
     float: left;
     font-weight: bold;
     text-transform: uppercase;
-    color: var(--responsive-td-label-color);
+    color: rgb(var(--secondary-color));
   }
   
-  .table .td:last-child {
+  .td:last-child {
     border-bottom: 0;
   }
 }
@@ -95,18 +99,23 @@
 }
 
 .sortableHeader:hover {
-  background-color: var(--th-hover-bg-color);
+  background-color: rgba(var(--primary-color), 0.05);
 }
 
-.sortIndicatorContainer {
-  margin-left: 0.5rem;
-  display: inline-flex;
+.headerContent {
+  display: flex;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.sortable {
+  cursor: pointer;
 }
 
 .sortIcon {
-  width: 12px;
-  height: 12px;
+  width: 1rem;
+  height: 1rem;
+  color: rgb(var(--secondary-color));
   transition: transform 0.2s ease-in-out;
 }
 
@@ -114,10 +123,81 @@
   transform: rotate(180deg);
 }
 
-.td {
-  color: var(--td-text-color);
+.actionsHeader {
+  width: 1%;
+  white-space: nowrap;
 }
 
 .actionsCell {
   text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.paginationWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.paginationControls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.paginationNavButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: none;
+  color: rgb(var(--text-color));
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+
+  &:hover:not(:disabled) {
+    color: rgb(var(--primary-color));
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pageNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border: 1px solid rgb(var(--border-color));
+  border-radius: 0.5rem;
+  background: none;
+  color: rgb(var(--text-color));
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: rgb(var(--primary-color));
+    border-color: rgb(var(--primary-color));
+    color: rgb(var(--primary-color-foreground));
+  }
+
+  &:disabled {
+    background-color: rgb(var(--primary-color));
+    border-color: rgb(var(--primary-color));
+    color: rgb(var(--primary-color-foreground));
+    cursor: not-allowed;
+  }
+}
+
+.activePage {
+  background-color: rgb(var(--primary-color));
+  border-color: rgb(var(--primary-color));
+  color: rgb(var(--primary-color-foreground));
 } 

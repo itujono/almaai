@@ -8,26 +8,22 @@ interface Item {
   label: string;
 }
 
-type CheckboxGroupProps = React.ComponentProps<typeof CheckboxGroupBase> & {
+export interface CheckboxGroupProps extends React.ComponentProps<typeof CheckboxGroupBase> {
   label?: string;
   items: Item[];
-  name: string;
-};
+  error?: string;
+}
 
-export default function CheckboxGroup({ name, label, items, ...props }: CheckboxGroupProps) {
+export default function CheckboxGroup({ label, items, error, ...props }: CheckboxGroupProps) {
   return (
-    <Field.Root name={name} className={styles.field}>
-      <Field.Label className={styles.label}>{label}</Field.Label>
+    <div className={styles.field}>
+      {label && <Field.Label className={styles.label}>{label}</Field.Label>}
       <CheckboxGroupBase className={styles.CheckboxGroup} {...props}>
         {items.map((item) => (
           <Checkbox key={item.value} label={item.label} value={item.value} />
         ))}
       </CheckboxGroupBase>
-      <Field.Error className={styles.error} />
-    </Field.Root>
+      {error && <p className={styles.error}>{error}</p>}
+    </div>
   );
 }
-
-export { default as CheckboxGroup } from "./base";
-export { default as FormCheckboxGroup } from "./form";
-export type { CheckboxGroupProps } from "./base";

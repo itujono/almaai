@@ -100,7 +100,7 @@
   
   .Actions {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 1rem;
     margin-top: 2.5rem;
   }

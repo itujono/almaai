@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import styles from "./table.module.css";
 import { ArrowDownIcon } from "lucide-react";
+import Pagination from "./pagination";
 
 interface TableHeader {
   key: string;
@@ -8,27 +9,30 @@ interface TableHeader {
   sortable?: boolean;
 }
 
-export interface TableRow {
-  id: string; // Or a unique key for the row
-  [key: string]: any;
-}
-
-// Define a type for sort configuration
 type SortConfig = {
   key: string;
   direction: "ascending" | "descending";
 } | null;
 
-interface TableProps {
+interface TableProps<T extends Record<string, any>> {
   headers: TableHeader[];
-  data: TableRow[];
+  data: T[];
   caption?: string;
   itemsPerPage?: number;
   currentPage?: number;
-  actions?: (item: TableRow) => React.ReactNode; // Function to render actions for a row
+  onPageChange?: (page: number) => void;
+  actions?: (item: T) => React.ReactNode;
 }
 
-const Table: React.FC<TableProps> = ({ headers, data, caption, itemsPerPage, currentPage, actions }) => {
+const Table = <T extends Record<string, any>>({
+  headers,
+  data,
+  caption,
+  itemsPerPage,
+  currentPage = 1,
+  onPageChange,
+  actions,
+}: TableProps<T>) => {
   const [sortConfig, setSortConfig] = useState<SortConfig>(null);
 
   const processedData = useMemo(() => {
@@ -69,46 +73,50 @@ const Table: React.FC<TableProps> = ({ headers, data, caption, itemsPerPage, cur
     return <ArrowDownIcon className={`${styles.sortIcon} ${isAscending ? styles.rotatedIcon : ""}`} />;
   };
 
+  const totalPages = itemsPerPage ? Math.ceil(data.length / itemsPerPage) : 1;
+
   return (
-    <div className={styles.tableContainer}>
-      <table className={styles.table}>
+    <>
+      <div className={styles.tableContainer}>
         {caption && <caption className={styles.caption}>{caption}</caption>}
-        <thead className={styles.thead}>
-          <tr className={styles.tr}>
-            {headers.map((header) => (
-              <th
-                key={header.key}
-                className={`${styles.th} ${header.sortable ? styles.sortableHeader : ""}`}
-                onClick={() => header.sortable && requestSort(header.key)}
-                scope="col"
-              >
-                {header.label}
-                {header.sortable && (
-                  <span className={styles.sortIndicatorContainer}>{getSortIndicator(header.key)}</span>
-                )}
-              </th>
-            ))}
-            {actions && (
-              <th scope="col" className={styles.th}>
-                Actions
-              </th>
-            )}
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {processedData.map((item) => (
-            <tr key={item.id} className={styles.tr}>
+        <table className={styles.table}>
+          <thead className={styles.thead}>
+            <tr className={styles.tr}>
               {headers.map((header) => (
-                <td key={header.key} className={styles.td} data-label={header.label}>
-                  {item[header.key]}
-                </td>
+                <th
+                  key={header.key}
+                  onClick={header.sortable ? () => requestSort(header.key) : undefined}
+                  className={`${header.sortable ? styles.sortable : ""} ${styles.th}`}
+                >
+                  <div className={`${styles.headerContent} ${styles.sortIndicator}`}>
+                    {header.label}
+                    {header.sortable && getSortIndicator(header.key)}
+                  </div>
+                </th>
               ))}
-              {actions && <td className={`${styles.td} ${styles.actionsCell}`}>{actions(item)}</td>}
+              {actions && <th className={`${styles.actionsHeader} ${styles.th}`}>Actions</th>}
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className={styles.tbody}>
+            {processedData.map((item, index) => (
+              <tr key={index} className={styles.tr}>
+                {headers.map((header) => (
+                  <td key={header.key} className={styles.td}>
+                    {item[header.key]}
+                  </td>
+                ))}
+                {actions && <td className={`${styles.actionsCell} ${styles.td}`}>{actions(item)}</td>}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {itemsPerPage && onPageChange && (
+        <div className={styles.paginationWrapper}>
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
+        </div>
+      )}
+    </>
   );
 };
 

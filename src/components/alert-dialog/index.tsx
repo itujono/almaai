@@ -7,8 +7,8 @@ interface AlertDialogProps extends React.ComponentProps<typeof AlertDialogBase.R
   description: string;
   triggerText?: string;
   children?: React.ReactNode;
-  closeText?: string;
-  okText?: string;
+  closeText?: string | React.ReactNode;
+  okText?: string | React.ReactNode;
   onOk: () => void;
 }
 
@@ -17,7 +17,7 @@ export default function AlertDialog({
   description,
   children,
   triggerText,
-  closeText,
+  closeText = "Cancel",
   onOk,
   okText,
   ...props
