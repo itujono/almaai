@@ -22,7 +22,15 @@ export default function Input<T extends FieldValues>({ name, label, control, ...
       render={({ field, fieldState }) => (
         <div className={styles.field}>
           {label && <Field.Label className={styles.label}>{label}</Field.Label>}
-          <InputBase className={styles.input} {...props} {...field} />
+          <InputBase
+            className={styles.input}
+            {...props}
+            name={field.name}
+            onBlur={field.onBlur}
+            onChange={field.onChange}
+            ref={field.ref}
+            value={field.value ?? ""}
+          />
           {fieldState.error && <p className={styles.error}>{fieldState.error.message}</p>}
         </div>
       )}

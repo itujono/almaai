@@ -109,37 +109,48 @@
   .heroSection {
     padding: 2rem 1rem;
     flex-direction: column;
-    text-align: center;
+    min-height: auto;
+    height: 50vh;
+
+    .heroContent {
+      align-items: center;
+      margin-left: 0;
+      width: 100%;
+      padding: 0 1rem;
+      text-align: center;
+  
+      h1 {
+        font-size: 2rem;
+      }
+    }
   }
 
   .heroImageContainer {
     position: relative;
-    width: 60%;
-    max-width: 200px;
-    margin-bottom: 1rem;
+    width: 50%;
+    max-width: 180px;
+    margin-bottom: 1.5rem;
     order: -1;
     align-self: center;
-  }
-  .heroDecorativeImage {
-    margin-left: 0;
-  }
 
-  .heroContent {
-    align-items: center;
-    margin-left: 0;
-    width: 100%;
-    padding: 0 1rem;
-
-    h1 {
-      font-size: 2rem;
-      text-align: center;
+    img {
+      margin-left: 0;
     }
+
   }
 
   .formContainer {
-    margin-top: 1.5rem;
-    padding: 0 1rem;
+    margin-top: 2.5rem;
+    padding: 0 1rem 4rem 1rem;
     gap: 2rem;
+    max-width: 100%;
+  }
+
+  .formSection {
+    .innerSection {
+      width: 100%;
+      margin: 0;
+    }
   }
 
   .sectionHeader h2 {

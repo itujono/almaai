@@ -29,8 +29,8 @@ export default function Select<T extends FieldValues>({
       name={name}
       render={({ field, fieldState }) => (
         <div className={styles.field}>
-          <SelectBase.Root {...props} onValueChange={field.onChange} value={field.value}>
-            <SelectBase.Trigger className={styles.select}>
+          <SelectBase.Root {...props} onValueChange={field.onChange} value={field.value ?? ""}>
+            <SelectBase.Trigger ref={field.ref} className={styles.select}>
               <SelectBase.Value placeholder={placeholder} />
               <SelectBase.Icon className={styles.icon}>
                 <ChevronDown size={18} />

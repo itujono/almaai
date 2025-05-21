@@ -32,7 +32,7 @@ const formSchema = z.object({
   lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
   country: z.string().min(1, "Country is required"),
-  website: z.string().min(1, "LinkedIn or Personal Website URL is required"),
+  website: z.string().min(1, "LinkedIn or Personal Website URL is required").url("Invalid URL"),
   visaCategories: z.array(z.string()).min(1, "At least one visa category is required"),
   helpDetails: z.string().min(1, "Help details are required"),
 });
@@ -45,6 +45,7 @@ export default function LeadForm() {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     console.log(data);
+    setIsThankYouOpen(true);
   };
 
   return (
@@ -88,6 +89,7 @@ case based on your goals."
         <SectionHeader icon="💜" title="How can we help you?" />
         <div className={styles.innerSection}>
           <Textarea
+            control={form.control}
             name="helpDetails"
             placeholder="What is your current status and when does it expire? What is your past immigration history? Are you looking for long-term permanent residency or short-term employment visa or both? Are there any timeline considerations?"
             aria-label="How can we help you?"
