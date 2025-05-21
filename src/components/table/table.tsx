@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import styles from "./table.module.css";
+import { ArrowDownIcon } from "lucide-react";
 
 interface TableHeader {
   key: string;
@@ -63,10 +64,9 @@ const Table: React.FC<TableProps> = ({ headers, data, caption, itemsPerPage, cur
   };
 
   const getSortIndicator = (key: string) => {
-    if (!sortConfig || sortConfig.key !== key) {
-      return null; // No indicator or a default "unsorted" indicator
-    }
-    return sortConfig.direction === "ascending" ? " ▲" : " ▼";
+    const isSortedByKey = sortConfig !== null && sortConfig.key === key;
+    const isAscending = isSortedByKey && sortConfig!.direction === "ascending";
+    return <ArrowDownIcon className={`${styles.sortIcon} ${isAscending ? styles.rotatedIcon : ""}`} />;
   };
 
   return (
@@ -83,7 +83,9 @@ const Table: React.FC<TableProps> = ({ headers, data, caption, itemsPerPage, cur
                 scope="col"
               >
                 {header.label}
-                {header.sortable && <span className={styles.sortIndicator}>{getSortIndicator(header.key)}</span>}
+                {header.sortable && (
+                  <span className={styles.sortIndicatorContainer}>{getSortIndicator(header.key)}</span>
+                )}
               </th>
             ))}
             {actions && (

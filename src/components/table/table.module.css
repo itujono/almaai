@@ -1,16 +1,15 @@
 .tableContainer {
   width: 100%;
-  overflow-x: auto; /* For responsive behavior on small screens */
-  border: 1px solid var(--table-border-color); /* Light gray border, similar to image */
-  border-radius: 8px; /* Rounded corners for the container */
-  background-color: var(--table-bg-color); /* White background for the table area */
-  box-shadow: 0 4px 6px -1px var(--table-shadow-color-light), 0 2px 4px -1px var(--table-shadow-color-dark); /* Subtle shadow */
+  overflow-x: auto;
+  border: 1px solid var(--table-border-color);
+  border-radius: 14px;
+  background-color: var(--table-bg-color);
 }
 
 .table {
   width: 100%;
-  border-collapse: collapse; /* Removes default spacing between cells */
-  min-width: 600px; /* Minimum width before horizontal scroll appears */
+  border-collapse: collapse;
+  min-width: 600px;
 }
 
 .caption {
@@ -18,39 +17,35 @@
   font-size: 1.25rem;
   font-weight: bold;
   text-align: left;
-  color: var(--caption-text-color); /* Dark gray text */
+  color: var(--caption-text-color);
 }
 
 .thead {
-  background-color: var(--thead-bg-color); /* Very light gray for header background */
+  height: 4rem;
 }
 
 .th,
 .td {
-  padding: 0.75rem 1rem; /* Consistent padding for header and data cells */
+  padding: 0.75rem 1rem;
   text-align: left;
-  border-bottom: 1px solid var(--table-border-color); /* Horizontal lines between rows */
-  color: var(--th-text-color); /* Default to th text color, td will override */
-  font-size: 0.875rem; /* Slightly smaller font size for table content */
+  border-bottom: 1px solid var(--table-border-color);
+  color: var(--th-text-color);
+  font-size: 0.875rem;
 }
 
 .th {
-  font-weight: 600; /* Make header text a bit bolder */
-  text-transform: capitalize; /* Capitalize header labels if needed */
-  /* cursor: pointer; */ /* Will be handled by sortableHeader */
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
-/* Remove border from the last row's cells for a cleaner look */
 .tbody .tr:last-child .td {
   border-bottom: none;
 }
 
-/* Basic hover effect for rows */
 .tbody .tr:hover {
-  background-color: var(--tr-hover-bg-color); /* Light gray on hover */
+  background-color: var(--tr-hover-bg-color);
 }
 
-/* Style for data-label attribute for responsive tables (optional, but good practice) */
 @media screen and (max-width: 600px) {
   .table {
     border: 0;
@@ -61,7 +56,7 @@
   }
   
   .table .thead {
-    display: none; /* Hide table headers on small screens */
+    display: none;
   }
   
   .table .tr {
@@ -78,7 +73,6 @@
   }
   
   .table .td::before {
-    /* Use the data-label attribute for pseudo-header */
     content: attr(data-label);
     float: left;
     font-weight: bold;
@@ -96,20 +90,29 @@
 }
 
 .sortableHeader:hover {
-  background-color: var(--th-hover-bg-color); /* Slightly darker on hover for sortable headers */
+  background-color: var(--th-hover-bg-color);
 }
 
-.sortIndicator {
+.sortIndicatorContainer {
   margin-left: 0.5rem;
-  font-size: 0.8em; /* Smaller indicator */
-  display: inline-block; /* Keep it on the same line */
+  display: inline-flex;
+  align-items: center;
+}
+
+.sortIcon {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.rotatedIcon {
+  transform: rotate(180deg);
 }
 
 .td {
-  color: var(--td-text-color); /* Darker text for data cells for better contrast */
+  color: var(--td-text-color);
 }
 
 .actionsCell {
-  /* Add specific styles for actions cell if needed, e.g., text-align: right */
-  /* For now, it will inherit styles from .td */
+  text-align: right;
 } 

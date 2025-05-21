@@ -69,3 +69,62 @@
   font-size: 0.9rem;
   color: #718096;
 }
+
+.paginationControls span {
+  font-size: 0.9rem;
+  color: rgb(113 128 150);
+}
+
+.paginationNavButton,
+.pageNumber {
+  padding: 0.5rem;
+  border: 1px solid rgb(203 213 224);
+  background-color: rgb(255 255 255);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: rgb(74 85 104);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  line-height: 1;
+}
+
+.paginationNavButton {
+  border: none;
+  background-color: transparent;
+  padding: 0.4rem;
+}
+
+.paginationNavButton:disabled,
+.pageNumber:disabled {
+  background-color: rgb(247 250 252);
+  color: rgb(160 174 192);
+  cursor: not-allowed;
+}
+
+.pageNumber:disabled {
+  border-color: rgb(226 232 240);
+}
+
+.paginationNavButton:hover:not(:disabled),
+.pageNumber:hover:not(:disabled) {
+  background-color: rgb(237 242 247);
+}
+
+.paginationNavButton:hover:not(:disabled) {
+  background-color: rgb(240 240 240);
+}
+
+.pageNumber.activePage {
+  background-color: rgb(43 108 176);
+  color: rgb(255 255 255);
+  border-color: rgb(43 108 176);
+  font-weight: 600;
+}
+
+.paginationNavButton svg {
+  stroke: currentColor; 
+} 

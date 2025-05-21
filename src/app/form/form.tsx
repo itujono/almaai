@@ -9,6 +9,9 @@ import { useState } from "react";
 import styles from "./page.module.css";
 import formStyles from "./form.module.css";
 import Dialog from "@/components/dialog";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const visaCategories = [
   { value: "o1", label: "O-1" },
@@ -24,18 +27,28 @@ const countries = [
   { value: "other", label: "Other" },
 ];
 
-export default function Form() {
-  const [isThankYouOpen, setIsThankYouOpen] = useState(false);
+const formSchema = z.object({
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email address"),
+  country: z.string().min(1, "Country is required"),
+  website: z.string().min(1, "LinkedIn or Personal Website URL is required"),
+  visaCategories: z.array(z.string()).min(1, "At least one visa category is required"),
+  helpDetails: z.string().min(1, "Help details are required"),
+});
 
-  const handleFormSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    // TODO: Add actual form submission logic here
-    console.log("Form submitted");
-    setIsThankYouOpen(true);
+export default function LeadForm() {
+  const [isThankYouOpen, setIsThankYouOpen] = useState(false);
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    console.log(data);
   };
 
   return (
-    <form onSubmit={handleFormSubmit} className={styles.formContainer}>
+    <form className={styles.formContainer} onSubmit={form.handleSubmit(onSubmit)}>
       <ThankYouDialog isThankYouOpen={isThankYouOpen} setIsThankYouOpen={setIsThankYouOpen} />
       <section className={styles.formSection}>
         <SectionHeader
@@ -45,19 +58,21 @@ export default function Form() {
 case based on your goals."
         />
         <div className={styles.innerSection}>
-          <Input name="firstName" placeholder="First Name" aria-label="First Name" />
-          <Input name="lastName" placeholder="Last Name" aria-label="Last Name" />
-          <Input type="email" name="email" placeholder="Email" aria-label="Email" />
+          <Input name="firstName" placeholder="First Name" aria-label="First Name" control={form.control} />
+          <Input name="lastName" placeholder="Last Name" aria-label="Last Name" control={form.control} />
+          <Input type="email" name="email" placeholder="Email" aria-label="Email" control={form.control} />
           <Select
             name="country"
             placeholder="Country of Citizenship"
             aria-label="Country of Citizenship"
             options={countries}
+            control={form.control}
           />
           <Input
             name="website"
             placeholder="LinkedIn / Personal Website URL"
             aria-label="LinkedIn or Personal Website URL"
+            control={form.control}
           />
         </div>
       </section>
@@ -65,7 +80,7 @@ case based on your goals."
       <section className={styles.formSection}>
         <SectionHeader icon="🎲" title="Visa categories of interest?" />
         <div className={styles.innerSection}>
-          <CheckboxGroup label="Select applicable visa categories" items={visaCategories} />
+          <CheckboxGroup name="visaCategories" items={visaCategories} />
         </div>
       </section>
 

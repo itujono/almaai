@@ -24,6 +24,13 @@
     &:disabled:focus-visible {
         outline: none;
     }
+
+    &.small {
+        height: 2.5rem;
+        padding: 0 1rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+    }
 }
 
 .primary {

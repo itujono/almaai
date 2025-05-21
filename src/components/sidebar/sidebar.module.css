@@ -10,7 +10,6 @@
   position: fixed;
   left: 0;
   top: 0;
-  box-shadow: 2px 0 5px var(--sidebar-box-shadow-color);
 }
 
 .sidebarTop {
@@ -62,14 +61,11 @@
   font-weight: 600;
 }
 
-/* If you have icons for nav links, you'd style them here */
-
 .sidebarBottom {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  border-top: 1px solid var(--sidebar-border-color);
   margin: 0 calc(-1 * var(--sidebar-padding-horizontal)) calc(-1 * var(--sidebar-padding-vertical)) calc(-1 * var(--sidebar-padding-horizontal));
   padding: var(--sidebar-padding-vertical) var(--sidebar-padding-horizontal);
 }

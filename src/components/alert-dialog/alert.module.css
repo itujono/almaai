@@ -61,11 +61,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 24rem;
+    width: 32rem;
     max-width: calc(100vw - 3rem);
     margin-top: -2rem;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
+    padding: 2.5rem 2.5rem;
+    border-radius: 1rem;
     outline: 1px solid rgb(var(--border-color));
     background-color: rgb(var(--bg-color));
     color: rgb(var(--text-color));
@@ -88,19 +88,20 @@
     font-size: 1.125rem;
     line-height: 1.75rem;
     letter-spacing: -0.0025em;
-    font-weight: 500;
+    font-weight: 600;
   }
   
   .Description {
     margin: 0 0 1.5rem;
-    font-size: 1rem;
+    font-size: 0.875rem;
     line-height: 1.5rem;
-    color: rgb(var(--placeholder-color));
+    color: rgb(var(--text-color));
   }
   
   .Actions {
     display: flex;
     justify-content: end;
     gap: 1rem;
+    margin-top: 2.5rem;
   }
   

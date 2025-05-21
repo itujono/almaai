@@ -5,13 +5,14 @@ import Table, { TableRow } from "@/components/table/table";
 import Input from "@/components/input";
 import Select from "@/components/select";
 import AlertDialog from "@/components/alert-dialog";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import styles from "./leads.module.css";
 
 const ITEMS_PER_PAGE = 5;
 
 const leadHeaders = [
   { key: "name", label: "Name", sortable: true },
-  { key: "submitted", label: "Submitted", sortable: false }, // Or implement date parsing for sorting
+  { key: "submitted", label: "Submitted", sortable: false },
   { key: "status", label: "Status", sortable: true },
   { key: "country", label: "Country", sortable: true },
 ];
@@ -25,37 +26,26 @@ const mockLeadsData = [
   { id: "6", name: "Jane Ma", submitted: "02/02/2024, 2:45 PM", status: "Pending", country: "Mexico" },
   { id: "7", name: "Anand Jain", submitted: "02/02/2024, 2:45 PM", status: "Reached Out", country: "Mexico" },
   { id: "8", name: "Anna Voronova", submitted: "02/02/2024, 2:45 PM", status: "Pending", country: "France" },
+  { id: "9", name: "Luis Carlos", submitted: "02/03/2024, 10:00 AM", status: "Pending", country: "Colombia" },
+  { id: "10", name: "Aisha Khan", submitted: "02/03/2024, 11:30 AM", status: "Reached Out", country: "Pakistan" },
+  { id: "11", name: "Kenji Tanaka", submitted: "02/03/2024, 1:15 PM", status: "Closed", country: "Japan" },
 ];
 
 const statusOptions = [
-  // Options for the select dropdown
   { value: "pending", label: "Pending" },
   { value: "reached_out", label: "Reached Out" },
-  { value: "closed", label: "Closed" }, // Example, add as needed
+  { value: "closed", label: "Closed" },
 ];
 
 export default function Leads() {
-  const [currentPage, setCurrentPage] = React.useState(1);
-  // const [searchTerm, setSearchTerm] = React.useState('');
-  // const [selectedStatus, setSelectedStatus] = React.useState('');
-  // Add state for which lead is being updated, if needed for the dialog
-  // const [updatingLead, setUpdatingLead] = React.useState<typeof mockLeadsData[0] | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const [selectedStatus, setSelectedStatus] = useState('');
 
   const totalPages = Math.ceil(mockLeadsData.length / ITEMS_PER_PAGE);
 
-  const handleNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-  };
-
-  const handlePreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-  };
-
   const handleUpdateStatus = (lead: TableRow) => {
-    // Logic to update lead status will go here
-    // For now, just log it and the potential new status from the dialog
     console.log(`Confirmed update for lead: ${lead.name}`);
-    // Example: setUpdatingLead(null); // Close dialog or reset state after confirmation
   };
 
   const renderActions = (lead: TableRow) => (
@@ -66,51 +56,80 @@ export default function Leads() {
       okText="Confirm Update"
       closeText="Cancel"
       onOk={() => handleUpdateStatus(lead)}
-    >
-      <></>
-    </AlertDialog>
+    />
   );
+
+  const handlePageClick = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 3;
+    const halfMaxPages = Math.floor(maxPagesToShow / 2);
+
+    let startPage = Math.max(1, currentPage - halfMaxPages);
+    let endPage = Math.min(totalPages, currentPage + halfMaxPages);
+
+    if (totalPages <= maxPagesToShow) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (currentPage <= halfMaxPages) {
+        endPage = maxPagesToShow;
+      } else if (currentPage + halfMaxPages >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+      }
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <button
+          key={i}
+          onClick={() => handlePageClick(i)}
+          disabled={currentPage === i}
+          className={`${styles.pageNumber} ${currentPage === i ? styles.activePage : ""}`}
+          aria-current={currentPage === i ? "page" : undefined}
+        >
+          {i}
+        </button>,
+      );
+    }
+    return pageNumbers;
+  };
 
   return (
     <div className={styles.leadsPageLayout}>
-      {" "}
-      {/* Optional: for overall page background/spacing */}
       <div className={styles.leadsContentPanel}>
         <h1 className={styles.title}>Leads</h1>
         <div className={styles.controlsContainer}>
-          <Input
-            name="searchLeads"
-            placeholder="Search" // Icon to be handled later if not part of Input component
-            aria-label="Search leads"
-            // value={searchTerm}
-            // onChange={(e) => setSearchTerm(e.target.value)} // For controlled component
-          />
-          <Select
-            name="statusFilter"
-            placeholder="Status" // This will be the default text shown
-            options={statusOptions}
-            aria-label="Filter by status"
-            // value={selectedStatus} // For controlled component
-            // onValueChange={setSelectedStatus} // For controlled component
-          />
+          <Input name="searchLeads" placeholder="Search" aria-label="Search leads" />
+          <Select name="statusFilter" placeholder="Status" options={statusOptions} aria-label="Filter by status" />
         </div>
         <Table
           headers={leadHeaders}
           data={mockLeadsData}
-          caption="Client Leads"
           itemsPerPage={ITEMS_PER_PAGE}
           currentPage={currentPage}
           actions={renderActions}
         />
         <div className={styles.paginationControls}>
-          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-            Previous
+          <button
+            onClick={() => handlePageClick(Math.max(1, currentPage - 1))}
+            disabled={currentPage === 1}
+            className={styles.paginationNavButton}
+            aria-label="Previous page"
+          >
+            <ChevronLeftIcon size={18} />
           </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-            Next
+          {renderPageNumbers()}
+          <button
+            onClick={() => handlePageClick(Math.min(totalPages, currentPage + 1))}
+            disabled={currentPage === totalPages}
+            className={styles.paginationNavButton}
+            aria-label="Next page"
+          >
+            <ChevronRightIcon size={18} />
           </button>
         </div>
       </div>
