@@ -9,37 +9,37 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
-  color: var(--primary-color);
+  color: rgb(var(--text-color));
 }
 
 .input {
   box-sizing: border-box;
   padding: 0.5rem 0.875rem;
   margin: 0;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgb(var(--border-color));
   width: 100%;
   height: 2.5rem;
   border-radius: 0.75rem;
   font-family: var(--font-sans);
-  font-size: 1rem;
+  font-size: 0.875rem;
   background-color: rgb(var(--bg-color));
-  color: var(--primary-color);
+  color: rgb(var(--text-color));
   transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 
   &::placeholder {
-    color: var(--secondary-color);
+    color: rgb(var(--placeholder-color));
     opacity: 0.7;
   }
 
   &:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(var(--foreground-rgb), 0.2);
+    border-color: rgb(var(--primary-color));
+    box-shadow: 0 0 0 2px rgb(var(--bg-color)), 0.2;
   }
 }
 
 .error {
   font-size: 0.875rem;
   line-height: 1.25rem;
-  color: var(--secondary-color);
+  color: rgb(var(--secondary-color));
 }
