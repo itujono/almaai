@@ -1,34 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Alma AI - Immigration Case Assessment Platform
+
+A modern web application built with Next.js for managing immigration case assessments and leads.
+
+## Tech Stack
+
+- **Styling**: CSS Modules with nested support
+- **UI Components**: BaseUI components with custom styling
+- **Form Handling**: react-hook-form with Zod schema validation
+- **State Management**: nuqs for URL-based state management
+
+## Key Features
+
+### Immigration Case Assessment Form (`/form`)
+
+- Beautiful, responsive form UI with multi-section layout
+- Client-side form validation using react-hook-form and Zod
+- Fields include:
+  - Personal information
+  - Country of citizenship
+  - Visa categories of interest
+  - Case details and timeline
+- Thank you dialog after submission
+
+### Leads Management Dashboard (`/leads`)
+
+- Comprehensive leads table with:
+  - Search functionality (by name or country)
+  - Status filtering (pending, reached out, closed)
+  - Pagination (5 items per page)
+  - Status updates for each lead
+- Real-time filtering with API integration
+- URL-based state management for filters
+- Responsive design for all screen sizes
+
+### Settings Page (`/settings`)
+
+- Placeholder page
+
+## Architecture
+
+### Routing
+
+- Dashboard layout with persistent sidebar (`/src/app/(dashboard)/layout.tsx`)
+- Public form page with custom layout (`/src/app/form/page.tsx`)
+
+### API Routes
+
+- Leads endpoints:
+  - GET `/api/leads` - Fetch leads with search and status filters
+  - PATCH `/api/leads/[id]` - Update lead status
+
+### State Management
+
+- URL-based state management using `nuqs`
+- Server actions for data mutations
+- Mock data simulation with artificial delays
+
+### Styling
+
+- CSS Modules with nested selectors support
+- Responsive design with mobile-first approach
+- Custom variables for consistent theming
 
 ## Getting Started
 
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Development
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### File Structure
 
-## Learn More
+```
+src/
+├── actions/         # Server actions
+├── app/            # Main pages
+│   ├── (dashboard) # Dashboard routes
+│   ├── api/        # API routes
+│   └── form/       # Public form page
+├── components/     # Reusable UI components
+└── styles/        # Global styles and variables
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Deployed on Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is deployed on Vercel, you can access it at [https://almaai.vercel.app/](https://almaai.vercel.app/)

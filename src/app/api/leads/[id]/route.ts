@@ -1,8 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { updateLeadStatus } from "@/actions/leads";
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+interface Params {
+  params: Promise<{ id: string }>;
+}
+
+export async function PATCH(request: NextRequest, { params }: Params) {
   try {
+    const { id } = await params;
     const { status } = await request.json();
 
     if (!status) {
@@ -14,7 +19,7 @@ export async function PATCH(request: Request, { params }: { params: { id: string
       return NextResponse.json({ error: "Invalid status value" }, { status: 400 });
     }
 
-    const lead = await updateLeadStatus(params.id, status);
+    const lead = await updateLeadStatus(id, status);
     return NextResponse.json(lead);
   } catch (error) {
     console.error("Error updating lead status:", error);
