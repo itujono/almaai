@@ -13,7 +13,7 @@ import Button from "@/components/button";
 
 const ITEMS_PER_PAGE = 5;
 
-const leadHeaders = [
+const columns = [
   { key: "name", label: "Name", sortable: true },
   { key: "submitted", label: "Submitted", sortable: false },
   { key: "status", label: "Status", sortable: true },
@@ -118,13 +118,13 @@ export default function LeadsContent({ leads: initialLeads }: LeadsFormData) {
           options={statusOptions}
           aria-label="Filter by status"
           value={statusValue}
-          onValueChange={(value: unknown) => setStatusValue(value as string)}
+          onValueChange={(value) => setStatusValue(value as string)}
         />
       </div>
       {error && <div className={styles.error}>{error}</div>}
       <div className={isLoading ? styles.loading : ""}>
         <Table
-          headers={leadHeaders}
+          headers={columns}
           data={leads}
           itemsPerPage={ITEMS_PER_PAGE}
           currentPage={currentPage}
