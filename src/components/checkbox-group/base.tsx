@@ -20,7 +20,7 @@ export default function CheckboxGroup({ label, items, error, ...props }: Checkbo
       {label && <Field.Label className={styles.label}>{label}</Field.Label>}
       <CheckboxGroupBase className={styles.CheckboxGroup} {...props}>
         {items.map((item) => (
-          <Checkbox key={item.value} label={item.label} value={item.value} />
+          <Checkbox key={item.value} label={item.label} value={item.value} name={item.value} />
         ))}
       </CheckboxGroupBase>
       {error && <p className={styles.error}>{error}</p>}

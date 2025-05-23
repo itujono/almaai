@@ -5,8 +5,7 @@ import FormField from "../form/form-field";
 import CheckboxGroup from "./base";
 import type { CheckboxGroupProps } from "./base";
 
-interface FormCheckboxGroupProps<T extends FieldValues>
-  extends Omit<CheckboxGroupProps, "value" | "onValueChange" | "error" | "defaultValue"> {
+interface FormCheckboxGroupProps<T extends FieldValues> extends CheckboxGroupProps {
   name: Path<T>;
   control: Control<T>;
 }
@@ -20,14 +19,16 @@ export default function FormCheckboxGroup<T extends FieldValues>({
     <FormField
       control={control}
       name={name}
-      render={({ field, fieldState }) => (
-        <CheckboxGroup
-          {...props}
-          value={field.value ?? []}
-          onValueChange={field.onChange}
-          error={fieldState.error?.message}
-        />
-      )}
+      render={({ field, fieldState }) => {
+        return (
+          <CheckboxGroup
+            {...props}
+            value={field.value ?? []}
+            onValueChange={field.onChange}
+            error={fieldState.error?.message}
+          />
+        );
+      }}
     />
   );
 }

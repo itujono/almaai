@@ -12,6 +12,7 @@ import Dialog from "@/components/dialog";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 
 const visaCategories = [
   { value: "o1", label: "O-1" },
@@ -39,8 +40,17 @@ const formSchema = z.object({
 
 export default function LeadForm() {
   const [isThankYouOpen, setIsThankYouOpen] = useState(false);
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      country: "",
+      website: "",
+      visaCategories: [],
+      helpDetails: "",
+    },
   });
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
@@ -81,7 +91,12 @@ case based on your goals."
       <section className={styles.formSection}>
         <SectionHeader icon="🎲" title="Visa categories of interest?" />
         <div className={styles.innerSection}>
-          <FormCheckboxGroup name="visaCategories" items={visaCategories} control={form.control} />
+          <FormCheckboxGroup
+            name="visaCategories"
+            allValues={visaCategories.map((category) => category.value)}
+            items={visaCategories}
+            control={form.control}
+          />
         </div>
       </section>
 
@@ -129,9 +144,11 @@ function ThankYouDialog({ isThankYouOpen, setIsThankYouOpen }: ThankYouDialogPro
               hello@tryalma.ai.
             </p>
           </section>
-          <Button type="button" variant="primary" onClick={() => setIsThankYouOpen(false)}>
-            Go Back to Homepage
-          </Button>
+          <Link href="/leads">
+            <Button type="button" variant="primary">
+              Go Back to Homepage
+            </Button>
+          </Link>
         </div>
       </Dialog.Content>
     </Dialog.Root>
